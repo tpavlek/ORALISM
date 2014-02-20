@@ -33,10 +33,9 @@ class BaseMigration extends Migration {
 
     Schema::create('family_doctor', function($table) {
         $table->integer('doctor_id')->unsigned();
-        $table->integer('patient_id)->unsigned();
+        $table->integer('patient_id')->unsigned();
         $table->foreign('doctor_id')->references('person_id')->on('persons');
-        $table->foregin('patient_id)->references('person_id')->on('persons');
-        $table->primary(array('doctor_id', 'person_id'));
+        $table->foreign('patient_id')->references('person_id')->on('persons');
         });
 
     Schema::create('radiology_record', function($table) {
