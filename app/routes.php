@@ -15,3 +15,7 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+Route::get('/login', 'LoginController@getIndex');
+Route::post('/login/verify', array('before' => 'guest', 'uses' => 'LoginController@verify'));
+Route::get('/home', array('before' => 'auth', 'uses' => 'HomeController@getIndex'));

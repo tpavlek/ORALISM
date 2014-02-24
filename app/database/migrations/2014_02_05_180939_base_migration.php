@@ -25,10 +25,11 @@ class BaseMigration extends Migration {
     Schema::create('users', function($table) {
         $table->integer('person_id')->unsigned();
         $table->string('user_name', 24);
-        $table->string('password', 24);
+        $table->string('password', 64);
         $table->string('class', 1);
         $table->dateTime('date_registered');
         $table->foreign('person_id')->references('person_id')->on('persons');
+        $table->primary('user_name');
         });
 
     Schema::create('family_doctor', function($table) {
