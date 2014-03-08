@@ -38,6 +38,12 @@ Route::filter('auth', function()
 	if (!Auth::check()) return Redirect::guest('login');
 });
 
+Route::filter('admin', function() {
+  if (!Auth::user()->isAdmin()) {
+    App::abort(401, "Unauthorized Access");
+  }
+});
+
 
 Route::filter('auth.basic', function()
 {
