@@ -26,13 +26,18 @@
 
         @if (Auth::check() && Auth::user()->isRadiologist())
           <li>
-            <a href="#">
+            <a href="{{ URL::route('record.create') }}">
               Upload
             </a>
           </li>
         @endif
 
         @if (Auth::check())
+          <li>
+            <a href="{{ URL::route('user.edit', Auth::user()->person_id) }}">
+              Edit Info
+            </a>
+          </li>
           <li>
             <a href="{{ URL::route('logout') }}">
               Log out {{ Auth::user()->user_name }}

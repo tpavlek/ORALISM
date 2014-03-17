@@ -6,7 +6,8 @@ Edit User
 
 @section('content')
 @include('error')
-{{ Form::model($person, array('route' => 'user.update', 'class' => 'pure-form pure-form-aligned')) }}
+{{ Form::model($person, array('route' => array('user.update', $person->person_id), 
+                              'class' => 'pure-form pure-form-aligned')) }}
   <legend>Edit Person: {{ $person->first_name }} {{ $person->last_name }}</legend>
   <div class="pure-control-group">
     {{ Form::label('first_name') }}
@@ -40,7 +41,8 @@ Edit User
 
 @foreach ($logins as $login)
   
-  {{ Form::model($login, array('route' => 'user.updateLogin', 'class' => 'pure-form pure-form-aligned')) }}
+  {{ Form::model($login, array('route' => array('user.updateLogin', $login->user_name), 
+                               'class' => 'pure-form pure-form-aligned')) }}
     <legend>Edit Login: {{ $login->user_name }}</legend>
     <div class="pure-control-group">
       {{ Form::label('user_name') }}

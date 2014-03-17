@@ -5,6 +5,7 @@ User Management
 @stop
 
 @section('content')
+  @include('error')
   <h2>User Management</h2>
   <p>
     <a href="{{ URL::route('user.create') }}" class="pure-button pure-button-good">
@@ -30,6 +31,12 @@ User Management
         <td>
           <a href="{{ URL::route('user.edit', $user->person_id) }}" class='pure-button pure-button-primary'>
             Edit
+          </a>
+          <a href="{{ URL::route('user.create_login', $user->person_id) }}" class="pure-button pure-button-secondary">
+            New Login
+          </a>
+          <a href="{{ URL::route('user.add_doctor', $user->person_id) }}" class="pure-button pure-button-secondary">
+            Manage Doctors
           </a>
         </td>
       </tr>
