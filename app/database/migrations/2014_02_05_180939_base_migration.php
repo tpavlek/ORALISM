@@ -14,6 +14,8 @@ class BaseMigration extends Migration {
 	{
 	  
     Schema::create('persons', function($table) {
+        $table->engine = 'MyISAM';
+
         $table->increments('person_id');
         $table->string('first_name', 24);
         $table->string('last_name', 24);
@@ -21,8 +23,13 @@ class BaseMigration extends Migration {
         $table->string('email', 128)->unique();
         $table->string('phone', 10);
         });
+
+    DB::statement('ALTER TABLE persons
+                   ADD FULLTEXT search(first_name,last_name)');
     
     Schema::create('users', function($table) {
+        $table->engine = 'MyISAM';
+
         $table->integer('person_id')->unsigned();
         $table->string('user_name', 24);
         $table->string('password', 64);
@@ -33,6 +40,8 @@ class BaseMigration extends Migration {
         });
 
     Schema::create('family_doctor', function($table) {
+        $table->engine = 'MyISAM';
+
         $table->integer('doctor_id')->unsigned();
         $table->integer('patient_id')->unsigned();
         $table->foreign('doctor_id')->references('person_id')->on('persons');
@@ -40,6 +49,8 @@ class BaseMigration extends Migration {
         });
 
     Schema::create('radiology_record', function($table) {
+        $table->engine = 'MyISAM';
+
         $table->increments('record_id');
         $table->integer('patient_id')->unsigned();
         $table->integer('doctor_id')->unsigned();
@@ -54,7 +65,12 @@ class BaseMigration extends Migration {
         $table->foreign('radiologist_id')->references('person_id')->on('persons');
         });
 
+    DB::statement('ALTER TABLE radiology_record
+                   ADD FULLTEXT search(diagnosis,description)');
+
     Schema::create('pacs_images', function($table) {
+        $table->engine = 'MyISAM';
+
         $table->integer('record_id')->unsigned();
         $table->integer('image_id')->unsigned();
         $table->binary('thumbnail');
@@ -63,7 +79,7 @@ class BaseMigration extends Migration {
         $table->primary(array('record_id', 'image_id'));
         $table->foreign('record_id')->references('record_id')->on('radiology_record');
         });
-
+    
   }
 
 	/**
