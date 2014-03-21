@@ -3,7 +3,7 @@
 class SearchController extends BaseController {
     public function index()
     {
-        return View::make("search");
+        return View::make("search/search");
     }
 
     public function results()
@@ -25,6 +25,7 @@ class SearchController extends BaseController {
                              match(r.diagnosis)
                              against ('{$query}' in boolean mode) as diagnosis_score ";
 
+        // join patients with records
         $statement .= "from oralism.radiology_record r, oralism.persons p
                        where r.patient_id = p.person_id";
 
@@ -38,6 +39,7 @@ class SearchController extends BaseController {
         else if($userClass == "R")
             $statement .= " and r.radiologist_id = {$personID}";
 
+        // matching search terms
         if($query != "")
             $statement .= " and (match(p.first_name,p.last_name)
                                  against ('{$query}' in boolean mode)
@@ -45,12 +47,13 @@ class SearchController extends BaseController {
                                  match(r.description,r.diagnosis)
                                  against ('{$query}' in boolean mode))";
 
+        // filter by test date
         if($startDate != "")
             $statement .= " and r.test_date >= '{$startDate}'";
-
         if($endDate != "")
             $statement .= " and r.test_date <= '{$endDate}'";
 
+        // sort based on preference
         if($query && $sorting == "relevance")
             $statement .= " order by (6*patient_score + 3*diagnosis_score + description_score) desc";
         else if($sorting == "recent_first")
@@ -58,13 +61,8 @@ class SearchController extends BaseController {
         else if($sorting == "recent_last")
             $statement .= " order by test_date asc";
 
+        // get the matching records and return the view
         $records = DB::select($statement);
-        foreach($records as $record)
-        {
-            $record->images = DB::select("select *
-                                          from oralism.pacs_images
-                                          where record_id = {$record->record_id}");
-        }
-        return var_dump($records);
+        return View::make("search/results", array('records' => $records));
     }
 }
