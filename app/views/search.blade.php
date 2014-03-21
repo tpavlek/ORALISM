@@ -13,7 +13,11 @@ Search
     Start Date:
     <input type="date" name="startDate"/><br>
     End Date:
-    <input type="date" name="endDate"/>
+    <input type="date" name="endDate"/><br>
+    Sort By:<br>
+    <input type="radio" name="sorting" value="relevance" checked>relevance<br>
+    <input type="radio" name="sorting" value="recent_first">most-recent-first<br>
+    <input type="radio" name="sorting" value="recent_last">most-recent-last<br>
   </div>
 
   <div class="pure-controls">

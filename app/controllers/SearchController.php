@@ -11,12 +11,13 @@ class SearchController extends BaseController {
         $query = Input::get("search");
         $startDate = Input::get("startDate");
         $endDate = Input::get("endDate");
+        $sorting = Input::get("sorting");
 
         if($query == "" && $startDate == "" && $endDate == "")
             return Redirect::route("search")->withErrors(array("Must include a search term or date range."));
 
         $statement = "select * ";
-        if($query != "")
+        if($query != "" && $sorting == "relevance")
             $statement .= ", match(p.first_name,p.last_name)
                              against ('{$query}' in boolean mode) as patient_score,
                              match(r.description)
@@ -40,8 +41,12 @@ class SearchController extends BaseController {
         if($endDate != "")
             $statement .= " and r.test_date <= '{$endDate}'";
 
-        if($query)
-            $statement .= " order by (6*patient_score + 3*diagnosis_score + description_score) ";
+        if($query && $sorting == "relevance")
+            $statement .= " order by (6*patient_score + 3*diagnosis_score + description_score) desc";
+        else if($sorting == "recent_first")
+            $statement .= " order by test_date desc";
+        else if($sorting == "recent_last")
+            $statement .= " order by test_date asc";
 
         return DB::select($statement);
     }
