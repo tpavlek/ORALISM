@@ -16,6 +16,8 @@ Route::get('test', function() {
     });
 Route::get('/', array('as' => 'home', 'uses' => 'HomeController@index'));
 
+
+
 Route::group(array('before' => 'guest'), function() {
   Route::get('/login', array('as' => 'login', 'uses' => 'LoginController@index'));
   Route::post('/login/verify', array('before' => 'guest', 
@@ -40,6 +42,10 @@ Route::group(array('before' => 'auth|radiologist'), function() {
 
 
 });
+
+//TODO
+Route::get('record/{id}/{img_size?}', array('as' => 'record.show', 'uses' => 'RecordController@show'));
+
 
 Route::group(array('before' => 'auth'), function() {
   Route::get('logout', array('as' => 'logout', 'uses' => 'LoginController@logout'));

@@ -7,7 +7,10 @@ Upload Record
 @section('content')
 @include('error')
 
-{{ Form::open(array('route' => 'record.store', 'class' => 'pure-form pure-form-aligned')) }}
+{{ Form::open(array('route' => 'record.store', 
+                    'class' => 'pure-form pure-form-aligned',
+                    'files' => true)) }}
+  <legend>Record information</legend>
   {{ Form::hidden('radiologist_id', Auth::user()->person->person_id) }} 
   <div class="pure-control-group">
     {{ Form::label('patient_id', "Patient") }}
@@ -16,7 +19,7 @@ Upload Record
   
   <div class="pure-control-group">
     {{ Form::label('doctor_id', "Doctor") }}
-    {{ Form::select('doctor_id', array()) }}
+    {{ Form::select('doctor_id', $doctors) }}
   </div>
   
   <div class="pure-control-group">
@@ -40,6 +43,11 @@ Upload Record
   <div class="pure-control-group">
     {{ Form::label('description') }}
     {{ Form::textarea('description') }}
+  </div>
+
+  <div class="pure-control-group">
+    {{ Form::label('files') }}
+    <input type="file" multiple name="files[]" class="upload"/>
   </div>
 
   <div class="pure-controls">

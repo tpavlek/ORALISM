@@ -2,6 +2,7 @@
   <head>
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css" >
     <link rel="stylesheet" href="http://dev.sc2ctl.com/styles/style.css" >
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" >
     <script src="/scripts/jquery-2.0.3.min.js"></script>
     <title>Oralism @yield('title', '')</title>
   </head>

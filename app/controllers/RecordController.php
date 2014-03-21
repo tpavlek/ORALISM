@@ -21,8 +21,13 @@ class RecordController extends \BaseController {
 	{
     $patients = Person::whereHas('logins', function($query) {
           $query->where('class', '=', 'p');
-        })->get();
-	  return View::make('record/create', array('patients' => $patients));	
+        })->get()->lists('full_name', 'person_id');
+    $doctors = Person::whereHas('logins', function($query) {
+          $query->where('class', '=', 'd');
+        })->get()->lists('full_name', 'person_id');
+
+	  return View::make('record/create', array('patients' => $patients,
+                                             'doctors' => $doctors));	
 	}
 
 	/**
@@ -46,9 +51,28 @@ class RecordController extends \BaseController {
     if (!$v->passes()) {
       return Redirect::route('record.create')->withInput()->withErrors($v);
     }
+    
+    $files = Input::file('files');
 
-    $record = Record::create($recordInput);
+    if ((count($files) == 1 && $files[0] == null) || count($files) == 0) {
+      $record = Record::create($recordInput);
+    } else {
+      $v = PacsImage::validate($files);
+      if (!$v->passes()) {
+        return Redirect::route('record.create')->withInput()->withErrors($v);
+      }
+      
+      $record = Record::create($recordInput);
 
+      foreach ($files as $file) {
+        $pacs = new PacsImage;
+        $pacs->record_id = $record->record_id;
+        $pacs->save();
+        $pacs->loadImage($file->getRealPath());
+      }
+
+    }
+    
     return Redirect::route('home');
 	}
 
@@ -58,9 +82,14 @@ class RecordController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($id, $img_size = PacsImage::REGULAR_SIZE)
 	{
-		//
+	  $record = Record::findOrFail($id);
+
+    if ($img_size < PacsImage::THUMBNAIL || $img_size > PacsImage::FULL_SIZE) {
+      $img_size = PacsImage::REGULAR_SIZE;
+    }
+    return View::make('record/show', array('record' => $record, 'img_size' => $img_size));
 	}
 
 	/**

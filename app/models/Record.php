@@ -1,6 +1,12 @@
 <?php
 
 class Record extends Eloquent {
+  public static $TEST_TYPES = array('smoke' => 'smoke', 'black_box' => 'black_box');
+  
+  protected $table = "radiology_record";
+  protected $id = "record_id";
+  protected $primaryKey = "record_id";
+  public $timestamps = false;
   protected $guarded = array('record_id');
   protected $fillable = array('patient_id',
                               'doctor_id',
@@ -12,15 +18,19 @@ class Record extends Eloquent {
                               'description');
 
   public function doctor() {
-    return $this->belongsTo('Person', 'person_id', 'doctor_id');
+    return $this->belongsTo('Person', 'doctor_id', 'person_id');
   }
 
   public function radiologist() {
-    return $this->belongsTo('Person', 'person_id', 'radiologist_id');
+    return $this->belongsTo('Person', 'radiologist_id', 'person_id');
   }
 
   public function patient() {
-    return $this->belongsTo('Person', 'person_id', 'patient_id');
+    return $this->belongsTo('Person', 'patient_id', 'person_id');
+  }
+
+  public function images() {
+    return $this->hasMany('PacsImage');
   }
 
   public static function validate($input) {
