@@ -48,6 +48,13 @@ class SearchController extends BaseController {
         else if($sorting == "recent_last")
             $statement .= " order by test_date asc";
 
-        return DB::select($statement);
+        $records = DB::select($statement);
+        foreach($records as $record)
+        {
+            $record->images = DB::select("select *
+                                          from oralism.pacs_images
+                                          where record_id = {$record->record_id}");
+        }
+        return var_dump($records);
     }
 }
