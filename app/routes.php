@@ -53,3 +53,8 @@ Route::group(array('before' => 'auth'), function() {
   Route::post('/user/{id}', array('as' => 'user.update', 'uses' => 'UserController@update'));
   Route::post('/userlogin/{name}', array('as' => 'user.updateLogin', 'uses' => 'UserController@updateLogin'));
 });
+
+Route::group(array('before' => 'auth'), function() {
+  Route::get('/search', array('as' => 'search', 'uses' => 'SearchController@index'));
+  Route::post('/search/results', array('as' => 'search.results', 'uses' => 'SearchController@results'));
+});
