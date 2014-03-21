@@ -48,5 +48,7 @@ Route::group(array('before' => 'auth'), function() {
   Route::post('/userlogin/{name}', array('as' => 'user.updateLogin', 'uses' => 'UserController@updateLogin'));
 });
 
-Route::get('/search', array('as' => 'search', 'uses' => 'SearchController@index'));
-Route::post('/search/results', array('as' => 'search.results', 'uses' => 'SearchController@results'));
+Route::group(array('before' => 'auth'), function() {
+  Route::get('/search', array('as' => 'search', 'uses' => 'SearchController@index'));
+  Route::post('/search/results', array('as' => 'search.results', 'uses' => 'SearchController@results'));
+});

@@ -28,6 +28,16 @@ class SearchController extends BaseController {
         $statement .= "from oralism.radiology_record r, oralism.persons p
                        where r.patient_id = p.person_id";
 
+        // security measures
+        $userClass = Auth::user()->class;
+        $personID = Auth::user()->person_id;
+        if($userClass == "P")
+            $statement .= " and r.patient_id = {$personID}";
+        else if($userClass == "D")
+            $statement .= " and r.doctor_id = {$personID}";
+        else if($userClass == "R")
+            $statement .= " and r.radiologist_id = {$personID}";
+
         if($query != "")
             $statement .= " and (match(p.first_name,p.last_name)
                                  against ('{$query}' in boolean mode)
