@@ -40,6 +40,11 @@
             </a>
           </li>
           <li>
+            <a href="{{ URL::route('search') }}">
+              Search
+            </a>
+          </li>
+          <li>
             <a href="{{ URL::route('logout') }}">
               Log out {{ Auth::user()->user_name }}
             </a>

@@ -7,54 +7,43 @@ Search Results
 @section('content')
 <h2>Search Results</h2>
 
-<table class="pure-table">
-  <tr>
-    <td>Patient ID</td>
+<script type='text/javascript'>
+$(".clickableRow").click(function(){
+    window.location = "http://stackoverflow.com/questions/12115550/html-clickable-table-rows";
+});
+</script>
+
+@if(sizeof($records) == 0)
+  <h2>No Results Found!</h2>
+@else
+  <table class="pure-table">
+    <tr>
+      <td>Patient</td>
+      <td>Doctor</td>
+      <td>Radiologist</td>
+      <td>Test Type</td>
+      <td>Prescribing Date</td>
+      <td>Test Date</td>
+      <td>Diagnosis</td>
+      <td>Description</td>
+      <td></td>
+    </tr>
     @foreach ($records as $record)
-      <td>{{ $record->patient_id }}
+    <tr class="clickableRow" href="www.example.com">
+      <td>{{ $record->patient_first_name . " " . $record->patient_last_name }}</td>
+      <td>{{ $record->doctor_first_name . " " . $record->doctor_last_name }}</td>
+      <td>{{ $record->radiologist_first_name . " " . $record->radiologist_last_name }}</td>
+      <td>{{ $record->test_type }}</td>
+      <td>{{ $record->prescribing_date }}</td>
+      <td>{{ $record->test_date }}</td>
+      <td>{{ $record->diagnosis }}</td>
+      <td>{{ $record->description }}</td>
+      <td><form method="get">
+          <input type="submit" formaction="{{ URL::route("record.show", array("id" => $record->record_id)) }}" value="View">
+          </form>
+      </td>
+    </tr>
     @endforeach
-  </tr>
-  <tr>
-    <td>Doctor ID</td>
-    @foreach ($records as $record)
-      <td>{{ $record->doctor_id }}
-    @endforeach
-  </tr>
-  <tr>
-    <td>Radiologist ID</td>
-    @foreach ($records as $record)
-      <td>{{ $record->radiologist_id }}
-    @endforeach
-  </tr>
-  <tr>
-    <td>Test Type</td>
-    @foreach ($records as $record)
-      <td>{{ $record->test_type }}
-    @endforeach
-  </tr>
-  <tr>
-    <td>Prescribing Date</td>
-    @foreach ($records as $record)
-      <td>{{ $record->prescribing_date }}
-    @endforeach
-  </tr>
-  <tr>
-    <td>Test Date</td>
-    @foreach ($records as $record)
-      <td>{{ $record->test_date }}
-    @endforeach
-  </tr>
-  <tr>
-    <td>Diagnosis</td>
-    @foreach ($records as $record)
-      <td>{{ $record->diagnosis }}
-    @endforeach
-  </tr>
-  <tr>
-    <td>Description</td>
-    @foreach ($records as $record)
-      <td>{{ $record->description }}
-    @endforeach
-  </tr>
-</table>
+  </table>
+@endif
 @stop
