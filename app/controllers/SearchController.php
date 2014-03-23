@@ -73,6 +73,12 @@ class SearchController extends BaseController {
 
         // get the matching records and return the view
         $records = DB::select($statement);
+
+        foreach($records as $record)
+        {
+            $record->images = DB::select("select * from pacs_images where record_id = {$record->record_id}");
+        }
+
         return View::make("search/results", array('records' => $records));
     }
 }

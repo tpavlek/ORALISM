@@ -58,3 +58,7 @@ Route::group(array('before' => 'auth'), function() {
   Route::get('/search', array('as' => 'search', 'uses' => 'SearchController@index'));
   Route::post('/search/results', array('as' => 'search.results', 'uses' => 'SearchController@results'));
 });
+
+Route::group(array('before' => 'auth'), function() {
+  Route::get('/image/show/{id}/{img_size?}', array('as' => 'image.show', 'uses' => 'ImageController@show'));
+});

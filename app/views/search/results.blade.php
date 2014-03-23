@@ -7,12 +7,6 @@ Search Results
 @section('content')
 <h2>Search Results</h2>
 
-<script type='text/javascript'>
-$(".clickableRow").click(function(){
-    window.location = "http://stackoverflow.com/questions/12115550/html-clickable-table-rows";
-});
-</script>
-
 @if(sizeof($records) == 0)
   <h2>No Results Found!</h2>
 @else
@@ -26,6 +20,7 @@ $(".clickableRow").click(function(){
       <td>Test Date</td>
       <td>Diagnosis</td>
       <td>Description</td>
+      <td>Thumbnails</td>
       <td></td>
     </tr>
     @foreach ($records as $record)
@@ -38,6 +33,12 @@ $(".clickableRow").click(function(){
       <td>{{ $record->test_date }}</td>
       <td>{{ $record->diagnosis }}</td>
       <td>{{ $record->description }}</td>
+      <td>
+        @foreach ($record->images as $image)
+          <a href="{{ URL::route("image.show", array("id" => $image->image_id)) }}" target="_blank">
+            <img src="data:image/jpeg;base64,{{ $image->thumbnail }}" style="margin: 2px 0px"/></a><br>
+        @endforeach
+      </td>
       <td><form method="get">
           <input type="submit" formaction="{{ URL::route("record.show", array("id" => $record->record_id)) }}" value="View">
           </form>
