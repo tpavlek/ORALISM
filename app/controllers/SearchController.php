@@ -13,7 +13,7 @@ class SearchController extends BaseController {
         $endDate = Input::get("endDate");
         $sorting = Input::get("sorting");
 
-        // make the query joined by ANDs
+        // make the query joined by ANDs (for boolean search)
         if($query != "")
         {
             $parts = explode(" ", $query);
@@ -23,9 +23,11 @@ class SearchController extends BaseController {
             $query = trim($query);
         }
 
+        // if no search supplied, error
         if($query == "" && $startDate == "" && $endDate == "")
             return Redirect::route("search")->withErrors(array("Must include a search term or date range."));
 
+        // get all relevant columns
         $statement = "select r.record_id, r.test_type, r.prescribing_date,
                              r.test_date, r.diagnosis, r.description,
                              p.first_name as patient_first_name,
@@ -34,6 +36,8 @@ class SearchController extends BaseController {
                              d.last_name as doctor_last_name,
                              rad.first_name as radiologist_first_name,
                              rad.last_name as radiologist_last_name ";
+
+        // get the scores returned by the fulltext search
         if($query != "" && $sorting == "relevance")
             $statement .= ", match(p.first_name,p.last_name)
                              against ('{$query}' in boolean mode) as patient_score,
@@ -42,7 +46,7 @@ class SearchController extends BaseController {
                              match(r.diagnosis)
                              against ('{$query}' in boolean mode) as diagnosis_score ";
 
-        // join patients with records
+        // join records with people involved
         $statement .= "from oralism.radiology_record r, oralism.persons p,
                        oralism.persons d, oralism.persons rad
                        where r.patient_id = p.person_id
@@ -52,14 +56,17 @@ class SearchController extends BaseController {
         // security measures
         $userClass = Auth::user()->class;
         $personID = Auth::user()->person_id;
+        // patient can only view their records
         if($userClass == "p")
             $statement .= " and r.patient_id = {$personID}";
+        // doctor can only view their patients records
         else if($userClass == "d")
             $statement .= " and r.doctor_id = {$personID}";
+        // radiologist can only view records they conducted
         else if($userClass == "r")
             $statement .= " and r.radiologist_id = {$personID}";
 
-        // matching search terms
+        // match the records against search terms
         if($query != "")
             $statement .= " and (match(p.first_name,p.last_name)
                                  against ('{$query}' in boolean mode)
@@ -67,7 +74,7 @@ class SearchController extends BaseController {
                                  match(r.description,r.diagnosis)
                                  against ('{$query}' in boolean mode))";
 
-        // filter by test date
+        // filter based on test date
         if($startDate != "")
             $statement .= " and r.test_date >= '{$startDate}'";
         if($endDate != "")
@@ -84,6 +91,7 @@ class SearchController extends BaseController {
         // get the matching records and return the view
         $records = DB::select($statement);
 
+        // attach the images to each record
         foreach($records as $record)
         {
             $record->images = DB::select("select * from pacs_images where record_id = {$record->record_id}");

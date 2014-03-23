@@ -18,6 +18,7 @@ Route::get('/', array('as' => 'home', 'uses' => 'HomeController@index'));
 
 
 
+// Login Module
 Route::group(array('before' => 'guest'), function() {
   Route::get('/login', array('as' => 'login', 'uses' => 'LoginController@index'));
   Route::post('/login/verify', array('before' => 'guest', 
@@ -25,6 +26,7 @@ Route::group(array('before' => 'guest'), function() {
                                      'uses' => 'LoginController@verify'));
 });
 
+// User Management Module
 Route::group(array('before' => 'auth|admin'), function() {
   Route::get('/user', array('as' => 'user.index', 'uses' => 'UserController@index'));
   Route::get('/user/create', array('as' => 'user.create', 'uses' => 'UserController@create'));
@@ -54,11 +56,13 @@ Route::group(array('before' => 'auth'), function() {
   Route::post('/userlogin/{name}', array('as' => 'user.updateLogin', 'uses' => 'UserController@updateLogin'));
 });
 
+// Search Module
 Route::group(array('before' => 'auth'), function() {
   Route::get('/search', array('as' => 'search', 'uses' => 'SearchController@index'));
   Route::post('/search/results', array('as' => 'search.results', 'uses' => 'SearchController@results'));
 });
 
+// Zoom-In Facility
 Route::group(array('before' => 'auth'), function() {
   Route::get('/image/show/{record_id}/{image_id}/{img_size?}', array('as' => 'image.show', 'uses' => 'ImageController@show'));
 });
