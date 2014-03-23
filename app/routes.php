@@ -60,5 +60,5 @@ Route::group(array('before' => 'auth'), function() {
 });
 
 Route::group(array('before' => 'auth'), function() {
-  Route::get('/image/show/{id}/{img_size?}', array('as' => 'image.show', 'uses' => 'ImageController@show'));
+  Route::get('/image/show/{record_id}/{image_id}/{img_size?}', array('as' => 'image.show', 'uses' => 'ImageController@show'));
 });

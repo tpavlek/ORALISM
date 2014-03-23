@@ -35,7 +35,7 @@ Search Results
       <td>{{ $record->description }}</td>
       <td>
         @foreach ($record->images as $image)
-          <a href="{{ URL::route("image.show", array("id" => $image->image_id)) }}" target="_blank">
+          <a href="{{ URL::route("image.show", array("record_id" => $record->record_id, "image_id" => $image->image_id)) }}" target="_blank">
             <img src="data:image/jpeg;base64,{{ $image->thumbnail }}" style="margin: 2px 0px"/></a><br>
         @endforeach
       </td>
