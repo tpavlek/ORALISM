@@ -13,12 +13,15 @@ class SearchController extends BaseController {
         $endDate = Input::get("endDate");
         $sorting = Input::get("sorting");
 
-        // make the query AND
-        $parts = explode(" ", $query);
-        $query = "";
-        foreach($parts as $part)
-            $query .= "+" . $part . " ";
-        $query = trim($query);
+        // make the query joined by ANDs
+        if($query != "")
+        {
+            $parts = explode(" ", $query);
+            $query = "";
+            foreach($parts as $part)
+                $query .= "+" . $part . " ";
+            $query = trim($query);
+        }
 
         if($query == "" && $startDate == "" && $endDate == "")
             return Redirect::route("search")->withErrors(array("Must include a search term or date range."));
