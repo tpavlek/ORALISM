@@ -56,6 +56,11 @@
             </a>
           </li>
         @endif
+          <li>
+            <a href="{{ URL::route('documentation') }}">
+              Documentation
+            </a>
+          </li>
       </ul>
     </nav>
     @yield('content')
