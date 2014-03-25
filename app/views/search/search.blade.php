@@ -9,17 +9,24 @@ Search
   {{ Form::open(array('route' => 'search.results', 'class' => 'pure-form pure-form-aligned')) }}
   <div class="pure-control-group">
     {{ Form::label('search') }}
-    {{ Form::text('search') }}<br>
-    Start Date:
-    <input type="date" name="startDate"/><br>
-    End Date:
-    <input type="date" name="endDate"/><br>
-    Sort By:<br>
-    <input type="radio" name="sorting" value="relevance" checked>relevance<br>
-    <input type="radio" name="sorting" value="recent_first">most-recent-first<br>
-    <input type="radio" name="sorting" value="recent_last">most-recent-last<br>
+    {{ Form::text('search') }}
   </div>
-
+  <div class="pure-control-group">
+    {{ Form::label('startDate') }}
+    {{ Form::input('date', 'startDate') }}
+  </div>
+  <div class="pure-control-group">
+    {{ Form::label('endDate') }}
+    {{ Form::input('date', 'endDate') }}
+  </div>
+  <div class="pure-control-group">
+    {{ Form::label('sorting') }}
+    {{ Form::select('sorting', array('relevance' => 'relevance',
+                                     'recent_first' => 'most-recent-first',
+                                     'recent_last' => 'most-recent-last'))
+    }}
+  </div>
+  
   <div class="pure-controls">
     <input type='submit' value='Search' class="pure-button pure-button-good" />
   </div>

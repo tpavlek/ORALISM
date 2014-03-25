@@ -2,7 +2,6 @@
 
 class Record extends Eloquent {
   public static $TEST_TYPES = array('smoke' => 'smoke', 'black_box' => 'black_box');
-  
   protected $table = "radiology_record";
   protected $id = "record_id";
   protected $primaryKey = "record_id";
@@ -17,23 +16,55 @@ class Record extends Eloquent {
                               'diagnosis',
                               'description');
 
+  /**
+   * doctor 
+   * 
+   * @access public
+   * @return void
+   */
   public function doctor() {
     return $this->belongsTo('Person', 'doctor_id', 'person_id');
   }
 
+  /**
+   * radiologist 
+   * 
+   * @access public
+   * @return void
+   */
   public function radiologist() {
     return $this->belongsTo('Person', 'radiologist_id', 'person_id');
   }
 
+  /**
+   * patient 
+   * 
+   * @access public
+   * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
   public function patient() {
     return $this->belongsTo('Person', 'patient_id', 'person_id');
   }
 
+  /**
+   * images 
+   * 
+   * @access public
+   * @return Illuminate\Database\Eloquent\Relations\HasMany 
+   */
   public function images() {
     return $this->hasMany('PacsImage');
   }
 
-  public static function validate($input) {
+  /**
+   * validate 
+   * 
+   * @param mixed $input 
+   * @static
+   * @access public
+   * @return Illuminate\Validation\Validator 
+   */
+  public static function validate(array $input) {
     $rules = array(
                     'test_type' => 'Required|Between:3,24',
                     'prescribing_date' => 'Required|date',

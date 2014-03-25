@@ -49,6 +49,10 @@ Route::group(array('before' => 'auth|radiologist'), function() {
 Route::get('record/{id}/{img_size?}', array('as' => 'record.show', 'uses' => 'RecordController@show'));
 
 
+//TODO
+Route::get('report', array('as' => 'report.index', 'uses' => 'ReportController@index'));
+Route::post('report', array('as' => 'report.generate', 'uses' => 'ReportController@generate'));
+
 Route::group(array('before' => 'auth'), function() {
   Route::get('logout', array('as' => 'logout', 'uses' => 'LoginController@logout'));
   Route::get('/user/{id}/edit', array('as' => 'user.edit', 'uses' => 'UserController@edit'));

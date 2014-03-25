@@ -3,7 +3,9 @@
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css" >
     <link rel="stylesheet" href="http://dev.sc2ctl.com/styles/style.css" >
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" >
-    <script src="/scripts/jquery-2.0.3.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.min.js"></script>
     <title>Oralism @yield('title', '')</title>
   </head>
   <body>
@@ -19,7 +21,7 @@
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="{{ URL::route('report.index') }}">
               Reports
             </a>
           </li>
@@ -32,6 +34,11 @@
             </a>
           </li>
         @endif
+        <li>
+          <a href="{{ URL::route('documentation') }}">
+            Documentation
+          </a>
+        </li>
 
         @if (Auth::check())
           <li>
@@ -56,11 +63,6 @@
             </a>
           </li>
         @endif
-          <li>
-            <a href="{{ URL::route('documentation') }}">
-              Documentation
-            </a>
-          </li>
       </ul>
     </nav>
     @yield('content')
