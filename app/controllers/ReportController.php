@@ -24,6 +24,7 @@ class ReportController extends \BaseController {
     $patients = Person::whereHas('records', function($query) use ($input) {
         $query->where('prescribing_date', '<=', $input['end_date']);
         $query->where('prescribing_date', '>=', $input['start_date']);
+        $query->where('diagnosis', '=', $input['diagnosis']);
         })->get();
 
     return View::make('report/show', array('patients' => $patients, 
