@@ -5,6 +5,7 @@ Report Generation
 @stop
 
 @section('content')
+  @include('error')
   {{ Form::open(array('route' => 'report.generate', 
                       'class' => 'pure-form pure-form-aligned')) }}
   
