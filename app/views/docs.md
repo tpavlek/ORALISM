@@ -131,7 +131,29 @@ report generating page.
 Uploading Module
 ----------------
 
-TODO
+An uploading module is provided to allow radiologists to create new records
+and attach images. This module is accessible to radiologists
+by clicking on the "Upload" button on the navigation bar.
+
+#### Creating records
+
+Clicking on the "Upload" button on the navigation bar will take you to the
+record creation page. This page contains fields for all the information
+required to create a new record.
+
+First begin by selecting the patient, doctor, and test type from the drop
+down menus. These drop down menus contain all of the patients, doctors, and
+test types in the database. Next you must select the prescribing and test
+dates. Finally, a short diagnosis, and description of the record must be
+included.
+
+Upon creation time one or more images can be attached to the record using
+the file selection at the bottom of the page. This will open a file system
+browser where you can select the related images from. Multiple images can
+be selected using the shift and ctrl keys, in addition to clicking.
+
+Once all of the fields have been filled out, you can create the record by
+clicking the button labelled "CREATE" at the bottom of the page.
 
 Search Module
 -------------
