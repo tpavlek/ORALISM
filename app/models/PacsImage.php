@@ -51,7 +51,7 @@ class PacsImage extends Eloquent {
    * @access public
    * @return string blob from database representing the requested image size 
    */
-  public function getPic(int $size) {
+  public function getPic($size) {
     if ($size == $this::THUMBNAIL) return $this->thumbnail;
     if ($size == $this::REGULAR_SIZE) return $this->regular_size;
     if ($size == $this::FULL_SIZE) return $this->full_size;

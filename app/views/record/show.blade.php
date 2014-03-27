@@ -52,7 +52,7 @@ View Record
     <img src="data:image/jpeg;base64,{{ $image->getPic($img_size) }}" />
     <a href="{{ URL::route('record.show', array('id' => $record->record_id, 'img_size' => $img_size +1)) }}" class="pure-button pure-button-good pure-button-large">
       +
-    </a>
+    </a><br>
   @endforeach
 </div>
 

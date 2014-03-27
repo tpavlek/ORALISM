@@ -71,12 +71,11 @@ class BaseMigration extends Migration {
     Schema::create('pacs_images', function($table) {
         $table->engine = 'MyISAM';
 
+        $table->increments('image_id');
         $table->integer('record_id')->unsigned();
-        $table->integer('image_id')->unsigned();
         $table->binary('thumbnail');
         $table->binary('regular_size');
         $table->binary('full_size');
-        $table->primary(array('record_id', 'image_id'));
         $table->foreign('record_id')->references('record_id')->on('radiology_record');
         });
     
