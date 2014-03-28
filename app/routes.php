@@ -36,6 +36,9 @@ Route::group(array('before' => 'auth|admin'), function() {
   Route::get('/user/{id}/add_doctor', array('as' => 'user.add_doctor', 'uses' => 'UserController@add_doctor'));
   Route::post('user/{id}/add_doctor', array('as' => 'user.store_doctor', 'uses' => 'UserController@store_doctor'));
   Route::post('user/{id}/remove_doctor', array('as' => 'user.remove_doctor', 'uses' => 'UserController@remove_doctor'));
+
+  Route::get('report/analysis', array('as' => 'report.analysis', 'uses' => 'ReportController@analysis'));
+  Route::post('report/analyze', array('as' => 'report.analyze', 'uses' => 'ReportController@analyze'));
   });
 
 Route::group(array('before' => 'auth|radiologist'), function() {

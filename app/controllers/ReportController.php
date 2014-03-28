@@ -31,6 +31,48 @@ class ReportController extends \BaseController {
                                            'diagnosis' => $input['diagnosis']));
   }
 
+  public function analysis() {
+    return View::make('report/analysis');
+  }
+
+  public function analyze() {
+    if (!Input::has('search') || count(Input::get('search')) == 0 ) {
+      $errors = array('You must select a property to filter by');
+      return Redirect::route('report.analysis')->withInput()->withErrors($errors);
+    }
+    
+    $search_topics = Input::get('search');
+    $search_params = array();
+    
+    foreach ($search_topics as $search) {
+      if (!Input::has($search) || Input::get($search) == null) {
+        $errors = array("You did not specify a value for " . $search);
+        return Redirect::route('report.analysis')->withInput()->withErrors($errors);
+      } else {
+        $search_params[$search] = Input::get($search);
+      }
+    }
+    $base = null; 
+    if (array_key_exists("test_type", $search_params)) {
+      $base = PacsImage::whereHas('record', function($query) {
+            $query->where('test_type', '=', $search_params['test_type']);
+          });
+    } else {
+      $base = PacsImage::whereHas('record', function($query) {
+            $query->whereIn('test_type', Record::$TEST_TYPE);
+          });
+    }
+
+    if (array_key_exists('person_id', $search_params)) {
+      $base = $base->whereHas('record', function($query) {
+            $query->where('patient_id', '=', $search_params['person_id']);
+          });
+    }
+    
+    //TODO group by time period
+    dd($search_params);
+  }
+
 	/**
 	 * Show the form for creating a new resource.
 	 *

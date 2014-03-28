@@ -88,4 +88,10 @@ class Person extends Eloquent {
 
     return Validator::make($input, $rules, $messages);
   }
+
+  public static function patients() {
+    return Person::whereHas('logins', function($query) {
+          $query->where('class', '=', 'p');
+        })->get()->lists('full_name', 'person_id');
+  }
 }
