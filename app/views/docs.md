@@ -223,7 +223,47 @@ the image.
 Data Analysis Module
 --------------------
 
-TODO
+The data analysis page is accessible to an admin by clicking on the "Analysis"
+button in the navigation bar.
+
+#### Submitting an analysis request
+
+Once on the data analysis page, a request can be submitted by filling out the
+fields and clicking the "SUBMIT" button at the bottom of the page. At least
+one of the filter checkboxes must be checked before the request can be submitted.
+When specifying the data (patient, test type, etc) to get data for, the
+corresponding checkbox must be selected in the filter section. Otherwise the
+data will not be taken into consideration.
+
+The period selection defines how frequently the output data is broken down.
+The smaller the period the less time there is between data points in the output.
+
+Upon completing the form, submit the request to view the results.
+
+#### Viewing data analysis results
+
+Once the data analysis request is submitted, you will be taken to a new page to
+view the results. If the request had no matching records then the resulting page
+will say "No results to display".
+
+If the request has results, then a table will be output. Each row of the table
+represents a period of time. So if weekly was selected for the period, then each
+row of the table represents a week. The beginning of the time period is listed
+in the first column of the table. If the period filter was not selected then
+the result will contain one row, which contains the results for all of time.
+In this case the first column will contain "NULL" meaning that there is no
+time period corresponding to these results.
+
+In all cases, the second column of the table in the results is the image count.
+This number refers to the number of images contained by all records matching
+the input request, broken down based on the period selected. Each rows image
+count corresponds to the number of images that are attached to records that
+match the request in the time period in the first column (or all of time if the
+first column contains "NULL").
+
+Once done viewing the results, another request can be made by clicking on the
+"SEARCH AGAIN" button at the bottom of the screen. This will take you back to
+the data analysis page.
 
 Installation Instructions
 =========================
