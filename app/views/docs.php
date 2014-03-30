@@ -260,4 +260,23 @@ the data analysis page.</p>
 
 <h1>Installation Instructions</h1>
 
-<p>TODO</p>
+<p>First, either clone the code from the git repository (available at , or unzip
+the source tarball.</p>
+
+<p>ORALISM is backed by MySQL and PHP. In order for it to run you will need to
+install PHP 5.5.3 and MySQL Ver 14.14 Distrib 5.5.32. Newer versions of PHP and
+MySQL may work with ORALISM, however they have not been tested.</p>
+
+<p>A database needs to be created in MySQL by the name 'oralism'. In addition a
+user with the username 'oralism' must be created and granted all priviledges on
+the database 'oralism'. The password for the user 'oralism' must be 'farts' to
+work with the current configuration file. Directions to create the database,
+create the user and set up priviledges can be found at mysql.com.</p>
+
+<p>In the directory of the cloned repository run <code>composer install</code> to install
+all dependencies for the project. Once the database is configured properly run
+<code>php artisan migrate</code> to run the initial migration and create all the necessary
+tables and keys for the application.</p>
+
+<p>From there, point your webserver at the /public directory, or run <code>php artisan
+serve</code>.</p>
