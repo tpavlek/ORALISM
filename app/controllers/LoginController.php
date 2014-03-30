@@ -2,11 +2,21 @@
 
 class LoginController extends BaseController
 {
+    /**
+     * index 
+     * Displays the login page 
+     * @return void
+     */
     public function index()
     {
       return View::make('login');
     }
 
+    /**
+     * verify 
+     * Verifys the user's login data 
+     * @return void
+     */
     public function verify()
     {
         $userName = Input::get("userName");
@@ -23,6 +33,11 @@ class LoginController extends BaseController
         }
     }
 
+    /**
+     * logout 
+     * Logs out the user 
+     * @return void
+     */
     public function logout() {
       //log the user out and return to home
       Auth::logout();

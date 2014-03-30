@@ -2,17 +2,22 @@
 
 class ReportController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-    $diagnoses = DB::table('radiology_record')->lists('diagnosis', 'diagnosis');
-	  return View::make('report/index', array('diagnoses' => $diagnoses));	
-	}
+		/**
+		 * Display a listing of the resource.
+		 *
+		 * @return Response
+		 */
+		public function index()
+		{
+		$diagnoses = DB::table('radiology_record')->lists('diagnosis', 'diagnosis');
+			return View::make('report/index', array('diagnoses' => $diagnoses));	
+		}
 
+  /**
+   * generate  
+   * Generates the requested report, based on the parameters provided
+   * @return View
+   */
   public function generate() {
     $input = Input::only('start_date', 'end_date', 'diagnosis');
 
@@ -31,10 +36,20 @@ class ReportController extends \BaseController {
                                            'diagnosis' => $input['diagnosis']));
   }
 
+  /**
+   * analysis 
+   * Displays the form to allow the user to perform data-mining 
+   * @return View
+   */
   public function analysis() {
     return View::make('report/analysis');
   }
 
+  /**
+   * analyze 
+   * Performs data mining on the database based on provided parameters
+   * @return View 
+   */
   public function analyze() {
     if (!Input::has('search') || count(Input::get('search')) == 0 ) {
       $errors = array('You must select a property to filter by');
@@ -95,73 +110,7 @@ class ReportController extends \BaseController {
       $base = $base->select($select);
     }
 
-
-    //TODO group by time period
     return View::make('report.data_analysis', array('data' => $base->get()));
   }
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
+	
 }

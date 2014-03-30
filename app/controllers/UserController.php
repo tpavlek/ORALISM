@@ -58,12 +58,23 @@ class UserController extends \BaseController {
     return Redirect::route('user.index');
 	}
 
+  /**
+   * create_login 
+   * Displays the form for adding a new login to a Person
+   * @param mixed $id 
+   * @return Response
+   */
   public function create_login($id) {
     $person = Person::find($id);
 
     return View::make('user/create_login', array('person' => $person));
   }
 
+  /**
+   * store_login 
+   * Stores a new Login and attaches it to a person 
+   * @return Response
+   */
   public function store_login() {
     $userInput = Input::only('user_name', 
                              'password', 
@@ -83,6 +94,12 @@ class UserController extends \BaseController {
     return Redirect::route('user.index');
   }
 
+  /**
+   * add_doctor 
+   * Displays the form for adding a family_doctor to a Person 
+   * @param int $user_id 
+   * @return Response 
+   */
   public function add_doctor($user_id) {
     $patient = Person::findOrFail($user_id);
     $persons = Person::whereHas('logins', function($query) {
@@ -98,6 +115,12 @@ class UserController extends \BaseController {
                                                'all_doctors' => $all_doctors));
   }
 
+  /**
+   * remove_doctor 
+   * Detaches a doctor from the belongsToMany relationship of a Person 
+   * @param mixed $patient_id 
+   * @return Response
+   */
   public function remove_doctor($patient_id) {
     $patient = Person::findOrFail($patient_id);
     if (!Input::has('doctor_id')) {
@@ -117,6 +140,11 @@ class UserController extends \BaseController {
 
   }
 
+  /**
+   * store_doctor 
+   * Attaches a doctor to the belongsToMany relationship of a Person
+   * @return Response
+   */
   public function store_doctor() {
     $patient = Person::findOrFail(Input::get('patient_id'));
     $doctor = Person::findOrFail(Input::get('doctor_id'));
@@ -130,17 +158,6 @@ class UserController extends \BaseController {
 
     return Redirect::route('user.add_doctor', $patient->person_id);
   }
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
 
 	/**
 	 * Show the form for editing the specified resource.
@@ -218,6 +235,12 @@ class UserController extends \BaseController {
     return Redirect::route('user.edit', $person->person_id);
 	}
 
+  /**
+   * updateLogin 
+   * Updates a login 
+   * @param string $name Username of the login
+   * @return Response
+   */
   public function updateLogin($name) {
     $user = User::findOrFail($name);
     
@@ -258,16 +281,5 @@ class UserController extends \BaseController {
 
     return Redirect::route('user.edit', $user->person->person_id);
   }
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
 
 }
