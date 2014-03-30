@@ -268,4 +268,15 @@ the data analysis page.
 Installation Instructions
 =========================
 
-TODO
+First, either clone the code from the git repository, or unzip the source tarball.
+
+In the directory of the cloned repository run a `composer install` to install all
+dependencies for the project. Once the dependencies are added, you will need to edit
+the configuaration located in app/config/database.php to reflect your local database
+install. Once the database is configured properly run
+`php artisan migrate`
+to run the initial migration and create all the necessary tables and keys for the
+application.
+
+From there, point your webserver at the /public directory, or run 
+`php artisan serve`
