@@ -45,12 +45,18 @@ View Record
 <div class="pure-form">
   <legend>Images</legend>
   @foreach ($record->images as $image)
-    <a href="{{ URL::route('record.show', array('id' => $record->record_id, 'img_size' => $img_size -1)) }}" class="pure-button pure-button-bad pure-button-large">
+    <a href="{{ URL::route('record.show', array('id' => $record->record_id, 
+                                                'img_size' => $img_size -1)) }}" 
+       class="pure-button pure-button-bad pure-button-large"
+       @if ($img_size <= PacsImage::THUMBNAIL) disabled @endif>
       -
     </a>
 
     <img src="data:image/jpeg;base64,{{ $image->getPic($img_size) }}" />
-    <a href="{{ URL::route('record.show', array('id' => $record->record_id, 'img_size' => $img_size +1)) }}" class="pure-button pure-button-good pure-button-large">
+    <a href="{{ URL::route('record.show', array('id' => $record->record_id, 
+                                                'img_size' => $img_size +1)) }}" 
+       class="pure-button pure-button-good pure-button-large"
+       @if ($img_size >= PacsImage::FULL_SIZE) disabled @endif>
       +
     </a><br>
   @endforeach

@@ -86,8 +86,10 @@ class RecordController extends \BaseController {
 	{
 	  $record = Record::findOrFail($id);
 
-    if ($img_size < PacsImage::THUMBNAIL || $img_size > PacsImage::FULL_SIZE) {
-      $img_size = PacsImage::REGULAR_SIZE;
+    if ($img_size < PacsImage::THUMBNAIL)
+      $img_size = PacsImage::THUMBNAIL;
+    if ($img_size > PacsImage::FULL_SIZE) {
+      $img_size = PacsImage::FULL_SIZE;
     }
     return View::make('record/show', array('record' => $record, 'img_size' => $img_size));
 	}
