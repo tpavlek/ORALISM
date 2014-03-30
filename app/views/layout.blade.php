@@ -25,6 +25,11 @@
               Reports
             </a>
           </li>
+          <li>
+            <a href="{{ URL::route('report.analysis') }}">
+              Analysis
+            </a>
+          </li>
         @endif
 
         @if (Auth::check() && Auth::user()->isRadiologist())
