@@ -37,6 +37,11 @@ class SearchController extends BaseController {
                              rad.first_name as radiologist_first_name,
                              rad.last_name as radiologist_last_name ";
 
+        $userClass = Auth::user()->class;
+        // add family doctor attributes if needed
+        if($userClass == "d")
+            $statement .= ", family_doctor.doctor_id as fam_doctor ";
+
         // get the scores returned by the fulltext search
         if($query != "" && $sorting == "relevance")
             $statement .= ", match(p.first_name,p.last_name)
@@ -48,20 +53,26 @@ class SearchController extends BaseController {
 
         // join records with people involved
         $statement .= "from oralism.radiology_record r, oralism.persons p,
-                       oralism.persons d, oralism.persons rad
-                       where r.patient_id = p.person_id
-                       and r.doctor_id = d.person_id
-                       and r.radiologist_id = rad.person_id";
+                       oralism.persons d, oralism.persons rad";
+
+        // add family doctor table if needed
+        if($userClass == "d")
+            $statement .= ", oralism.family_doctor family_doctor ";
+
+        // conditions
+        $statement .= " where r.patient_id = p.person_id
+                        and r.doctor_id = d.person_id
+                        and r.radiologist_id = rad.person_id";
 
         // security measures
-        $userClass = Auth::user()->class;
         $personID = Auth::user()->person_id;
         // patient can only view their records
         if($userClass == "p")
             $statement .= " and r.patient_id = {$personID}";
         // doctor can only view their patients records
         else if($userClass == "d")
-            $statement .= " and r.doctor_id = {$personID}";
+            $statement .= " and family_doctor.patient_id = r.patient_id
+                            and family_doctor.doctor_id = {$personID}";
         // radiologist can only view records they conducted
         else if($userClass == "r")
             $statement .= " and r.radiologist_id = {$personID}";
