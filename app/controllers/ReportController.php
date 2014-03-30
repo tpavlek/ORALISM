@@ -52,25 +52,52 @@ class ReportController extends \BaseController {
         $search_params[$search] = Input::get($search);
       }
     }
-    $base = null; 
+
+    $base = DB::table('pacs_images')
+              ->join('radiology_record', 
+                     'pacs_images.record_id', 
+                     '=', 
+                     'radiology_record.record_id');
+
     if (array_key_exists("test_type", $search_params)) {
-      $base = PacsImage::whereHas('record', function($query) {
-            $query->where('test_type', '=', $search_params['test_type']);
-          });
-    } else {
-      $base = PacsImage::whereHas('record', function($query) {
-            $query->whereIn('test_type', Record::$TEST_TYPE);
-          });
+      $base = $base->where('radiology_record.test_type',
+                           '=',
+                           $search_params['test_type']);
     }
 
-    if (array_key_exists('person_id', $search_params)) {
-      $base = $base->whereHas('record', function($query) {
-            $query->where('patient_id', '=', $search_params['person_id']);
-          });
+    if (array_key_exists('patient_id', $search_params)) {
+      $base = $base->where('radiology_record.patient_id',
+                           '=',
+                           $search_params['patient_id']);
     }
     
+    $select = array(DB::raw('count(pacs_images.image_id) as img_total'));
+
+    if (array_key_exists('period', $search_params)) {
+      switch ($search_params['period']) {
+        case "weekly": 
+          $select[] = DB::raw('YEARWEEK(radiology_record.test_date) as time');
+            $base = $base->select($select)
+               ->groupBy(DB::raw('YEARWEEK(radiology_record.test_date)'));
+          break;
+        case "monthly":
+          $select[] = DB::raw('CONCAT(YEAR(test_date), MONTH(test_date)) as time');
+          $base = $base->select($select)
+            ->groupBy(DB::raw('YEAR(test_date), MONTH(test_date)'));
+          break;
+        case "yearly":
+          $select[] = DB::raw('YEAR(test_date) as time');
+          $base = $base->select($select)
+            ->groupBy(DB::raw('YEAR(test_date)'));
+          break;
+      }
+    } else {
+      $base = $base->select($select);
+    }
+
+
     //TODO group by time period
-    dd($search_params);
+    return View::make('report.data_analysis', array('data' => $base->get()));
   }
 
 	/**

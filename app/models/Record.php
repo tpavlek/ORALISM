@@ -1,7 +1,7 @@
 <?php
 
 class Record extends Eloquent {
-  public static $TEST_TYPES = array('smoke' => 'smoke', 'black_box' => 'black_box');
+  public static $TEST_TYPES = array('MRI' => 'MRI', 'XRAY' => 'XRAY', 'CAT' => "CAT");
   protected $table = "radiology_record";
   protected $id = "record_id";
   protected $primaryKey = "record_id";
