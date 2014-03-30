@@ -281,10 +281,16 @@ the database 'oralism'. The password for the user 'oralism' must be 'farts' to
 work with the current configuration file. Directions to create the database,
 create the user and set up priviledges can be found at mysql.com.
 
-In the directory of the cloned repository run `composer install` to install
-all dependencies for the project. Once the database is configured properly run
-`php artisan migrate` to run the initial migration and create all the necessary
+In the directory of the cloned repository run `composer install` to install all
+dependencies for the project. Once the database is configured properly run `php
+artisan migrate` to run the initial migration and create all the necessary
 tables and keys for the application.
 
-From there, point your webserver at the /public directory, or run `php artisan
-serve`.
+In addition you can run `php artisan db:seed` this will create an initial admin
+user in the system. The initial user has the username "tpavlek" and password
+"wow".
+
+Now that you have the initial database set up, point your webserver at the
+/public directory, or run `php artisan serve`. The application can now be used
+by accessing port 8000 in the web browser on the host running the system. For
+example, "localhost:8000".
