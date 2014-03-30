@@ -46,7 +46,7 @@ class Person extends Eloquent {
    * @return string, the date of the first test. Exception thrown if none found 
    */
   public function date_of_diagnosis($diagnosis) {
-    $records = $this->records()->where('diagnosis', '=', $diagnosis);
+    $records = $this->records()->where('diagnosis', '=', $diagnosis)->orderBy("test_date");
     if ($records->count() == 0) {
       throw new Exception("Diagnosis not found");
     }
